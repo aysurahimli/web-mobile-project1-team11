@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    width: 250px;
+}
+
+#customFieldsContainer {
+    margin-top: 10px;
+}
+
+.field {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.field button {
+    margin-left: 5px;
+}
+
+input {
+    margin-bottom: 5px;
+    width: 100%;
+    padding: 5px;
+}
