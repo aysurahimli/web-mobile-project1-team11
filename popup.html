@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auto Form Filler</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <h2>Custom Data Fields</h2>
     <div id="customFieldsContainer"></div>
@@ -15,9 +17,17 @@
     <input type="text" id="fieldValue" placeholder="Field Value (e.g., https://portfolio.com)">
     <button id="addFieldButton">Add Field</button>
 
+    <h3>LinkedIn Profile URL</h3>
+    <input type="text" id="linkedinProfileUrl" value="https://www.linkedin.com/in/">
+    <button id="saveProfileUrlButton">Save Profile URL</button>
+
+    <button id="getLinkedinData">Get data from LinkedIn</button>
+
     <button id="autoFillButton">Auto-Fill Form</button>
+
 
     <!-- Include JavaScript -->
     <script src="popup.js"></script>
 </body>
+
 </html>

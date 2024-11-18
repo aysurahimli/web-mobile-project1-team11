@@ -3,9 +3,14 @@ const addFieldButton = document.getElementById("addFieldButton");
 const fieldNameInput = document.getElementById("fieldName");
 const fieldValueInput = document.getElementById("fieldValue");
 const customFieldsContainer = document.getElementById("customFieldsContainer");
+const linkedinProfileUrlInput = document.getElementById("linkedinProfileUrl");
+const saveProfileUrlButton = document.getElementById("saveProfileUrlButton");
 
-// Load stored fields on popup load
-document.addEventListener("DOMContentLoaded", loadCustomFields);
+// Load stored fields and LinkedIn URL on popup load
+document.addEventListener("DOMContentLoaded", () => {
+    loadCustomFields();
+    loadLinkedinProfileUrl();
+});
 
 // Function to load custom fields from local storage
 function loadCustomFields() {
@@ -70,8 +75,48 @@ function deleteField(name) {
     });
 }
 
+// Save LinkedIn profile URL
+saveProfileUrlButton.addEventListener("click", () => {
+    const profileUrl = linkedinProfileUrlInput.value.trim();
+    if (profileUrl.startsWith("https://www.linkedin.com/in/")) {
+        chrome.storage.local.set({ linkedinProfileUrl: profileUrl }, () => {
+            alert("LinkedIn Profile URL saved!");
+        });
+    } else {
+        alert("Please enter a valid LinkedIn profile URL.");
+    }
+});
+
+// Load LinkedIn profile URL on popup open
+function loadLinkedinProfileUrl() {
+    chrome.storage.local.get("linkedinProfileUrl", (data) => {
+        linkedinProfileUrlInput.value = data.linkedinProfileUrl || "https://www.linkedin.com/in/";
+    });
+}
+
+// Get data from LinkedIn by opening the profile page
+document.getElementById("getLinkedinData").addEventListener("click", () => {
+    chrome.storage.local.get("linkedinProfileUrl", (data) => {
+        const profileUrl = data.linkedinProfileUrl;
+        if (profileUrl) {
+            // Send a message to the background script to open the LinkedIn profile page
+            chrome.runtime.sendMessage({ action: "openLinkedInProfile", url: profileUrl });
+        } else {
+            alert("Please save your LinkedIn profile URL first.");
+        }
+    });
+});
+
+// Auto-fill form on the current page
 document.getElementById("autoFillButton").addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, { action: "autoFillForm" });
     });
+});
+
+// Reload fields when updated in storage
+chrome.runtime.onMessage.addListener((request) => {
+    if (request.message === "load_fields") {
+        loadCustomFields();
+    }
 });

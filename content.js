@@ -1,6 +1,11 @@
 chrome.runtime.sendMessage({ message: "wake_up" });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+if (window.location.href.startsWith("https://www.linkedin.com/in")) {
+    console.log(1)
+    fetchAndSaveLinkedInData()
+}
+
+chrome.runtime.onMessage.addListener((request) => {
     if (request.action === "autoFillForm") {
         chrome.storage.local.get("customFields", (data) => {
             const customFields = data.customFields || {};
@@ -26,3 +31,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
     }
 });
+
+
+function fetchAndSaveLinkedInData() {
+    // Select the name element and check if it exists
+    const nameElement = document.querySelector('h1');
+
+    if (nameElement) {
+        const fullName = nameElement.innerText.split(" ");
+        const name = fullName[0];
+        const surname = fullName.length > 1 ? fullName[1] : "";
+
+        // Retrieve existing custom fields from storage and update with LinkedIn data
+        chrome.storage.local.get("customFields", (data) => {
+            const customFields = data.customFields || {};
+            customFields["name"] = name;
+            customFields["surname"] = surname;
+
+            // Save updated customFields back to storage
+            chrome.storage.local.set({ customFields }, () => {
+                console.log("LinkedIn data saved to storage:", customFields);
+            });
+        });
+    } else {
+        console.log("Name element not found on LinkedIn profile page.");
+    }
+}
