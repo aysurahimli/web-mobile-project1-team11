@@ -4,6 +4,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("Service Worker is now active.");
   }
   if (request.action === "openLinkedInProfile" && request.url) {
-    chrome.tabs.create({ url: request.url });
+    chrome.tabs.create({ url: request.url }, (tab) => {
+      linkedInTabId = tab.id;
+    });
+  }
+  if (request.action === "closeLinkedInTab") {
+    console.log(1)
+    if (linkedInTabId) {
+      chrome.tabs.remove(linkedInTabId, () => {
+        linkedInTabId = null;
+      });
+    }
   }
 });
