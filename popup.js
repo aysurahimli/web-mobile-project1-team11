@@ -14,7 +14,7 @@ function loadProfiles() {
             const option = document.createElement("option");
             option.value = profile;
             option.textContent = profile;
-            profileSelector.appendChild(option);
+            profileDropdown.appendChild(option);
         }
     });
 }
@@ -45,7 +45,7 @@ saveProfileButton.addEventListener("click", () => {
 });
 
 profileDropdown.addEventListener("change", () => {
-    const selectedProfile = profileSelector.value;
+    const selectedProfile = profileDropdown.value;
     chrome.storage.local.get("profiles", (data) => {
         const profiles = data.profiles || {};
         const customFields = profiles[selectedProfile] || {};
