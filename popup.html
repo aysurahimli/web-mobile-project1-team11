@@ -20,6 +20,24 @@
         <div id="currentProfile"></div>
     </div>
     
+    <h2>Form Field Mapping</h2>
+    <div id="mappingContainer">
+        <div class="mapping">
+            <label>Select Field:</label>
+            <select id="profileField">
+                <option value="name">Name</option>
+                <option value="jobTitle">Job Title</option>
+                <option value="experience">Experience</option>
+                <option value="skills">Skills</option>
+                <option value="certifications">Certifications</option>
+
+            </select>
+            <label></label>
+            <input type="text" class="formField" placeholder="e.g. Name->'Full Name'">
+            <button class="addMapping">Add Mapping</button>
+        </div>
+        <div id="mappingList"></div>
+    </div>
     <script src="popup.js"></script>
 </body>
 
