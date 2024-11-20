@@ -4,29 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Form Filler</title>
+    <title>Custom Fields</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h2>Custom Data Fields</h2>
+    <h2 style="text-align: center;">Custom Data Fields</h2>
     <div id="customFieldsContainer"></div>
 
     <!-- Input form to add new custom field -->
-    <input type="text" id="fieldName" placeholder="Field Name (e.g., Portfolio Link)">
-    <input type="text" id="fieldValue" placeholder="Field Value (e.g., https://portfolio.com)">
-    <button id="addFieldButton">Add Field</button>
+    <div style="margin-bottom: 15px;">
+        <input type="text" id="fieldName" placeholder="Field Name (e.g., Certificates)">
+        <input type="text" id="fieldValue" placeholder="Field Value (e.g., Certified JavaScript Developer)">
+        <button id="addFieldButton">Add Field</button>
+    </div>
 
-    <h3>LinkedIn Profile URL</h3>
-    <input type="text" id="linkedinProfileUrl" value="https://www.linkedin.com/in/">
-    <button id="saveProfileUrlButton">Save Profile URL</button>
+    <div>
+        <input type="text" id="linkedinProfileUrl" placeholder="LinkedIn Profile URL">
+        <button id="saveProfileUrlButton">Save LinkedIn URL</button>
+    </div>
 
-    <button id="getLinkedinData">Get data from LinkedIn</button>
-
+    <button id="getLinkedinData">Get LinkedIn Data</button>
     <button id="autoFillButton">Auto-Fill Form</button>
 
-
-    <!-- Include JavaScript -->
     <script src="popup.js"></script>
 </body>
 
