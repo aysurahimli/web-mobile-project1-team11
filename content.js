@@ -26,6 +26,14 @@ chrome.runtime.onMessage.addListener((request) => {
                     portfolioField.value = customFields["surname"];
                 }
             }
+            if (customFields["jobTitle"]) {
+                const portfolioField = document.querySelector("input[name='jobTitle']") ||
+                    document.querySelector("#jobTitle") ||
+                    document.querySelector("input[placeholder='jobTitle']");
+                if (portfolioField) {
+                    portfolioField.value = customFields["jobTitle"];
+                }
+            }
         });
     }
 });
