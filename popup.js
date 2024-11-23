@@ -53,3 +53,4 @@ profileDropdown.addEventListener("change", () => {
         currentProfileDiv.textContent = `Current Profile: ${selectedProfile}`;
     });
 });
+
