@@ -54,3 +54,38 @@ profileDropdown.addEventListener("change", () => {
     });
 });
 
+document.querySelectorAll(".addMapping").forEach(button => {
+    button.addEventListener("click", () => {
+        const profileField = document.querySelector(".profileField").value;
+        const formField = document.querySelector(".formField").value;
+        if (profileField && formField) {
+            saveMapping(profileField, formField);
+            document.querySelector(".formField").value = "";
+        }
+    });
+});
+
+function saveMapping(profileField, formField) {
+    chrome.storage.local.get({ mappings: [] }, (result) => {
+        const mappings = result.mappings;
+        mappings.push({ profileField, formField });
+        chrome.storage.local.set({ mappings }, () => {
+            displayMappings();
+        });
+    });
+}
+
+function displayMappings() {
+    chrome.storage.local.get({ mappings: [] }, (result) => {
+        const mappingList = document.getElementById("mappingList");
+        mappingList.innerHTML = "";
+
+        result.mappings.forEach(mapping => {
+            const mappingElement = document.createElement("div");
+            mappingElement.textContent = `${mapping.profileField} -> ${mapping.formField}`;
+            mappingList.appendChild(mappingElement);
+        });
+    });
+};
+
+displayMappings();
