@@ -2,6 +2,7 @@ chrome.runtime.sendMessage({ message: "wake_up" });
 
 if (window.location.href.startsWith("https://www.linkedin.com/in")) {
     fetchAndSaveLinkedInData()
+    chrome.runtime.sendMessage({ action: "closeLinkedInTab" });
 }
 
 chrome.runtime.onMessage.addListener((request) => {
@@ -42,20 +43,25 @@ chrome.runtime.onMessage.addListener((request) => {
 function fetchAndSaveLinkedInData() {
     // Select the name and job title elements and check if they exist
     const nameElement = document.querySelector('h1');
-    const jobTitleElement = document.getElementsByTagName("h2")[2];
+    let jobTitleElement = document.getElementsByTagName("h2")[2];
+
+    console.log(jobTitleElement)
+
+    if(!jobTitleElement){
+        jobTitleElement = document.querySelector(".text-body-medium");
+    }
 
     if (nameElement) {
         const fullName = nameElement.innerText.split(" ");
         const name = fullName[0];
         const surname = fullName.length > 1 ? fullName[1] : "";
-        const jobTitle = jobTitleElement ? jobTitleElement.innerText : ""; // Get job title if it exists
-
+        const jobTitle = jobTitleElement.innerText
         // Retrieve existing custom fields from storage and update with LinkedIn data
         chrome.storage.local.get("customFields", (data) => {
             const customFields = data.customFields || {};
             customFields["name"] = name;
             customFields["surname"] = surname;
-            customFields["jobTitle"] = jobTitle; // Add job title to custom fields
+            customFields["jobTitle"] = jobTitle;
 
             // Save updated customFields back to storage
             chrome.storage.local.set({ customFields }, () => {

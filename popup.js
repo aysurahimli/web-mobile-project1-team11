@@ -75,15 +75,11 @@ function deleteField(name) {
     });
 }
 
-// Save LinkedIn profile URL
-saveProfileUrlButton.addEventListener("click", () => {
+// Automatically save LinkedIn profile URL on input change
+linkedinProfileUrlInput.addEventListener("input", () => {
     const profileUrl = linkedinProfileUrlInput.value.trim();
     if (profileUrl.startsWith("https://www.linkedin.com/in/")) {
-        chrome.storage.local.set({ linkedinProfileUrl: profileUrl }, () => {
-            alert("LinkedIn Profile URL saved!");
-        });
-    } else {
-        alert("Please enter a valid LinkedIn profile URL.");
+        chrome.storage.local.set({ linkedinProfileUrl: profileUrl });
     }
 });
 
@@ -104,7 +100,8 @@ document.getElementById("getLinkedinData").addEventListener("click", () => {
         } else {
             alert("Please save your LinkedIn profile URL first.");
         }
-    });
+    })
+
 });
 
 // Auto-fill form on the current page
@@ -115,8 +112,8 @@ document.getElementById("autoFillButton").addEventListener("click", () => {
 });
 
 // Reload fields when updated in storage
-chrome.runtime.onMessage.addListener((request) => {
-    if (request.message === "load_fields") {
-        loadCustomFields();
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === "local" && changes.customFields) {
+        loadCustomFields(); // Reload fields when "customFields" changes
     }
 });

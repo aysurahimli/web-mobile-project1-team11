@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("Service Worker is now active.");
   }
   if (request.action === "openLinkedInProfile" && request.url) {
-    chrome.tabs.create({ url: request.url }, (tab) => {
+    chrome.tabs.create({ url: request.url, active: false }, (tab) => {
       linkedInTabId = tab.id;
     });
   }
