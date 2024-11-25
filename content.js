@@ -2,7 +2,7 @@ chrome.runtime.sendMessage({ message: "wake_up" });
 
 if (window.location.href.startsWith("https://www.linkedin.com/in")) {
     fetchAndSaveLinkedInData();
-    // chrome.runtime.sendMessage({ action: "closeLinkedInTab" });
+    chrome.runtime.sendMessage({ action: "closeLinkedInTab" });
 }
 
 chrome.runtime.onMessage.addListener((request) => {

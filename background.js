@@ -9,7 +9,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     });
   }
   if (request.action === "closeLinkedInTab") {
-    console.log(1)
     if (linkedInTabId) {
       chrome.tabs.remove(linkedInTabId, () => {
         linkedInTabId = null;
