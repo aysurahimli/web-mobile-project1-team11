@@ -10,8 +10,15 @@
 
 <body>
     <h2 style="text-align: center;">Custom Data Fields</h2>
+    <div style="margin-bottom: 15px;"></div>
+    <label for="profileSelect">Select Profile:</label>
+    <select id="profileSelect">
+        <option disabled>Select a profile</option>
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button id="addProfileButton">Add Profile</button>
+    </div>
     <div id="customFieldsContainer"></div>
-
     <!-- Input form to add new custom field -->
     <div style="margin-bottom: 15px;">
         <input type="text" id="fieldName" placeholder="Field Name (e.g., Certificates)">
