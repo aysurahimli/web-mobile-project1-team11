@@ -112,10 +112,11 @@ function displayMappings() {
 displayMappings();
 
 document.getElementById("saveForm").addEventListener("click", () => {
-    chrome.storage.local.get(["activeProfile", "profiles", "savedForms"], (result) => {
+    chrome.storage.local.get(["activeProfile", "profiles", "savedForms, mappings"], (result) => {
         const profiles = result.profiles || {};
         const activeProfileName = result.activeProfile;
         const savedForms = result.savedForms || [];
+        const mappings = result.mappings || [];
 
         if (!activeProfileName || !profiles[activeProfileName]) {
             alert("No active profile found.");
@@ -125,6 +126,7 @@ document.getElementById("saveForm").addEventListener("click", () => {
         const formToSave = {
             profileData: profiles[activeProfileName],
             profileName: activeProfileName,
+            mappings: mappings,
             dateSaved: new Date().toLocaleString()
         };
 
@@ -211,4 +213,3 @@ document.getElementById("resetFormButton").addEventListener("click", () => {
     resetForm();
     alert("Form has been reset.")
 });
-
