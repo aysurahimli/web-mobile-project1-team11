@@ -77,10 +77,12 @@ document.querySelectorAll(".addMapping").forEach(button => {
     button.addEventListener("click", () => {
         const profileField = document.querySelector(".profileField").value;
         const formField = document.querySelector(".formField").value;
-        if (profileField && formField) {
+        if (!profileField || !formField) {
+            alert("Both fields must be filled!");
+        }
             saveMapping(profileField, formField);
             document.querySelector(".formField").value = "";
-        }
+        
     });
 });
 
@@ -115,7 +117,7 @@ document.getElementById("saveForm").addEventListener("click", () => {
         const activeProfileName = result.activeProfile;
         const savedForms = result.savedForms || [];
 
-        if (activeProfileName || !profiles[activeProfileName]) {
+        if (!activeProfileName || !profiles[activeProfileName]) {
             alert("No active profile found.");
             return;
         }
@@ -179,4 +181,34 @@ function savedFormDropdown () {
     });
 }
 
+
+
+
+function resetForm() {
+    document.getElementById("newProfileName").value = "";
+
+    const profileDropdown = document.getElementById("profileDropdown");
+    if (profileDropdown) {
+        profileDropdown.selectedIndex = 0;
+    }
+
+    const currentProfile = document.getElementById("currentProfile");
+    if (currentProfileDiv) {
+        currentProfileDiv.textContent = "No profile selected.";
+    }
+
+    const mappingList = document.getElementById("mappingList");
+    if (mappingList) {
+        mappingList.innerHTML = "";
+    }
+
+    chrome.storage.local.set({ customFields: {}, mappings: [] }, () => {
+        console.log("Form reset and storage cleared.")
+    });
+}
+
+document.getElementById("resetFormButton").addEventListener("click", () => {
+    resetForm();
+    alert("Form has been reset.")
+});
 
