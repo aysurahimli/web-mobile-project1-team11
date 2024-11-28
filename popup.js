@@ -12,8 +12,17 @@ const deleteProfileButton = document.getElementById("deleteProfileButton");
 let profiles = [];
 let activeProfile = null;
 
-// Load profiles and set up the UI on popup load
 document.addEventListener("DOMContentLoaded", () => {
+    const openDashboardButton = document.getElementById("openDashboardButton");
+
+    openDashboardButton.addEventListener("click", () => {
+        chrome.runtime.openOptionsPage(() => {
+            if (chrome.runtime.lastError) {
+                console.error("Error opening options page:", chrome.runtime.lastError.message);
+            }
+        });
+    });
+
     loadProfiles();
 });
 
