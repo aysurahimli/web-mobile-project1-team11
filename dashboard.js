@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModal = document.getElementById("closeModal");
     const addJobForm = document.getElementById("addJobForm");
     const jobList = document.getElementById("jobList");
+    const exportDataButton = document.getElementById("exportDataButton");
+    const importDataInput = document.getElementById("importDataInput");
+    const importDataButton = document.getElementById("importDataButton");
 
     function loadJobs() {
         chrome.storage.local.get("jobs", (data) => {
@@ -74,6 +77,46 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Export data
+    exportDataButton.addEventListener("click", () => {
+        chrome.storage.local.get(["jobs", "profiles"], (data) => {
+            const exportData = {
+                jobs: data.jobs || [],
+                profiles: data.profiles || []
+            };
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "data_export.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    });
+
+    // Import data
+    importDataButton.addEventListener("click", () => {
+        importDataInput.click(); // Trigger file input click
+    });
+
+    importDataInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const importedData = JSON.parse(e.target.result);
+                chrome.storage.local.set({ jobs: importedData.jobs, profiles: importedData.profiles }, () => {
+                    loadJobs(); // Reload jobs after import
+                    alert("Data imported successfully!");
+                });
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    // Listen for messages from content.js
     chrome.runtime.onMessage.addListener((request) => {
         if (request.action === "reloadJobs") {
             loadJobs(); // Reload jobs when notified
