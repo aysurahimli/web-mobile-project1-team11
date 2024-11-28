@@ -201,3 +201,64 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         loadProfiles();
     }
 });
+
+
+// Select modal elements
+const editFieldModal = document.getElementById("editFieldModal");
+const closeModal = document.getElementById("closeModal");
+const editFieldNameInput = document.getElementById("editFieldName");
+const editFieldValueInput = document.getElementById("editFieldValue");
+const saveEditButton = document.getElementById("saveEditButton");
+
+let fieldToEdit = null; // Store the field currently being edited
+
+// Function to open the modal for editing a field
+function editProfileField(name, currentValue) {
+    if (!activeProfile) {
+        alert("Please select a profile first.");
+        return;
+    }
+
+    fieldToEdit = name; // Store the field name to edit
+
+    // Populate modal inputs with current values
+    editFieldNameInput.value = name;
+    editFieldValueInput.value = currentValue;
+
+    // Show the modal
+    editFieldModal.style.display = "flex";
+}
+
+// Save changes and close the modal
+saveEditButton.addEventListener("click", () => {
+    const newFieldName = editFieldNameInput.value.trim();
+    const newFieldValue = editFieldValueInput.value.trim();
+
+    if (newFieldName && newFieldValue) {
+        // Find the field in the active profile and update it
+        const field = activeProfile.fields.find((field) => field.name === fieldToEdit);
+
+        if (field) {
+            field.name = newFieldName;
+            field.value = newFieldValue;
+        }
+
+        saveProfiles(); // Save the updated profile to storage
+        updateCustomFieldsUI(); // Refresh the UI
+        closeModal.click(); // Close the modal
+    } else {
+        alert("Field name and value cannot be empty.");
+    }
+});
+
+// Close modal on clicking the close button
+closeModal.addEventListener("click", () => {
+    editFieldModal.style.display = "none";
+});
+
+// Close modal when clicking outside the modal content
+window.addEventListener("click", (event) => {
+    if (event.target === editFieldModal) {
+        editFieldModal.style.display = "none";
+    }
+});
