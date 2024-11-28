@@ -1,5 +1,3 @@
-console.log("Content script is active.");
-
 
 if (window.location.href.startsWith("https://www.linkedin.com/in")) {
     fetchAndSaveLinkedInData();
@@ -96,3 +94,31 @@ function updateFieldInProfile(profile, fieldName, fieldValue) {
         profile.fields.push({ name: fieldName, value: fieldValue });
     }
 }
+
+document.addEventListener("submit", (event) => {
+
+    const form = event.target;
+    if (!form || form.tagName !== "FORM") return;
+
+    const formData = new FormData(form);
+    const jobData = {
+        company: formData.get("companyName") || "Unknown Company",
+        title: formData.get("jobTitle") || "Unknown Title",
+        date: formData.get("dateApplied") || new Date().toISOString().split("T")[0], // Default to today's date
+        status: formData.get("applicationStatus") || "Applied", // Default status
+    };
+
+    console.log("Captured job application data:", jobData);
+
+    // Store the job data in Chrome storage
+    chrome.storage.local.get("jobs", (data) => {
+        const jobs = data.jobs || [];
+        jobs.push(jobData);
+
+        chrome.storage.local.set({ jobs }, () => {
+            console.log("Job application saved:", jobData);
+            chrome.runtime.sendMessage({ action: "reloadJobs" });
+        });
+    });
+
+});

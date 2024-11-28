@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const addJobForm = document.getElementById("addJobForm");
     const jobList = document.getElementById("jobList");
 
-    // Load jobs from storage and render the table
     function loadJobs() {
         chrome.storage.local.get("jobs", (data) => {
             const jobs = data.jobs || [];
@@ -14,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderJobs(jobs) {
-        jobList.innerHTML = ""; 
+        jobList.innerHTML = "";
         jobs.forEach((job, index) => {
             const row = document.createElement("tr");
             row.innerHTML = `
@@ -73,6 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 loadJobs();
             });
         });
+    });
+
+    chrome.runtime.onMessage.addListener((request) => {
+        if (request.action === "reloadJobs") {
+            loadJobs(); // Reload jobs when notified
+        }
     });
 
     loadJobs();
