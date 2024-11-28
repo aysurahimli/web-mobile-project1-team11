@@ -40,7 +40,7 @@ function loadProfiles() {
 
 // Function to save profiles to chrome.storage.local
 function saveProfiles() {
-    chrome.storage.local.set({ profiles }, () => console.log("Profiles saved."));
+    chrome.storage.local.set({ profiles });
 }
 
 // Function to update the profile dropdown
@@ -202,6 +202,10 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     }
 });
 
+document.getElementById("autoFillButton").addEventListener("click", () => {
+    console.log("autoFillForm begin")
+    chrome.runtime.sendMessage({ action: "autoFillForm" });
+})
 
 // Select modal elements
 const editFieldModal = document.getElementById("editFieldModal");

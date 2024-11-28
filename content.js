@@ -1,4 +1,5 @@
-chrome.runtime.sendMessage({ message: "wake_up" });
+console.log("Content script is active.");
+
 
 if (window.location.href.startsWith("https://www.linkedin.com/in")) {
     fetchAndSaveLinkedInData();
@@ -11,8 +12,8 @@ chrome.runtime.onMessage.addListener((request) => {
     }
 });
 
+
 function autoFillForm() {
-    // Retrieve the profiles and active profile name
     chrome.storage.local.get(['profiles', 'activeProfileName'], (data) => {
         const profiles = data.profiles || [];
         const activeProfileName = data.activeProfileName;
@@ -24,37 +25,26 @@ function autoFillForm() {
                 customFields[field.name] = field.value;
             });
 
-            // Now, use customFields to fill the form
-            if (customFields["name"]) {
-                const nameField = document.querySelector("input[name='name']") ||
-                    document.querySelector("#name") ||
-                    document.querySelector("input[placeholder='name']");
-                if (nameField) {
-                    nameField.value = customFields["name"];
-                }
-            }
+            Object.keys(customFields).forEach((fieldName) => {
+                const fieldValue = customFields[fieldName];
+                const inputField = document.querySelector(`input[name='${fieldName}']`) ||
+                    document.querySelector(`#${fieldName}`) ||
+                    document.querySelector(`input[placeholder*='${fieldName}']`);
 
-            if (customFields["surname"]) {
-                const surnameField = document.querySelector("input[name='surname']") ||
-                    document.querySelector("#surname") ||
-                    document.querySelector("input[placeholder='surname']");
-                if (surnameField) {
-                    surnameField.value = customFields["surname"];
+                if (inputField) {
+                    inputField.value = fieldValue;
+                    inputField.dispatchEvent(new Event("input", { bubbles: true }));
+                } else {
+                    console.warn(`Field not found for autofill: ${fieldName}`);
                 }
-            }
+            });
 
-            if (customFields["jobTitle"]) {
-                const jobTitleField = document.querySelector("input[name='jobTitle']") ||
-                    document.querySelector("#jobTitle") ||
-                    document.querySelector("input[placeholder='jobTitle']");
-                if (jobTitleField) {
-                    jobTitleField.value = customFields["jobTitle"];
-                }
-            }
+            console.log("Form autofill complete.");
         } else {
             console.error("Active profile not found or has no fields.");
         }
     });
+
 }
 
 function fetchAndSaveLinkedInData() {

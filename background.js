@@ -1,18 +1,20 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(request.action)
-  if (request.message === "wake_up") {
-    console.log("Service Worker is now active.");
-  }
   if (request.action === "openLinkedInProfile" && request.url) {
     chrome.tabs.create({ url: request.url, active: false }, (tab) => {
       linkedInTabId = tab.id;
     });
   }
-  if (request.action === "closeLinkedInTab") {
-    if (linkedInTabId) {
-      chrome.tabs.remove(linkedInTabId, () => {
-        linkedInTabId = null;
-      });
-    }
+  if (request.action === "autoFillForm") {
+    console.log("Forwarding autofill request to content script.");
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: "autoFillForm" }, (response) => {
+          console.log("Response from content script:", response);
+        });
+      } else {
+        console.error("No active tab found to forward autofill.");
+      }
+    });
   }
+
 });
