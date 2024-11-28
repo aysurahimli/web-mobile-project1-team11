@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const exportDataButton = document.getElementById("exportDataButton");
     const importDataInput = document.getElementById("importDataInput");
     const importDataButton = document.getElementById("importDataButton");
+    const sendDataEmailButton = document.getElementById("sendDataEmailButton");
 
     function loadJobs() {
         chrome.storage.local.get("jobs", (data) => {
@@ -98,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Import data
     importDataButton.addEventListener("click", () => {
-        importDataInput.click(); // Trigger file input click
+        importDataInput.click();
     });
 
     importDataInput.addEventListener("change", (event) => {
@@ -114,6 +115,47 @@ document.addEventListener("DOMContentLoaded", () => {
             };
             reader.readAsText(file);
         }
+    });
+
+    sendDataEmailButton.addEventListener("click", () => {
+        chrome.storage.local.get(["jobs", "profiles"], (data) => {
+            const jobs = data.jobs || [];
+            const profiles = data.profiles || [];
+
+            if (jobs.length === 0 && profiles.length === 0) {
+                alert("No data available to send!");
+                return;
+            }
+
+            // Format jobs
+            const formattedJobs = jobs.map((job, index) => {
+                return `Job ${index + 1}:\n` +
+                    `Company: ${job.company}\n` +
+                    `Title: ${job.title}\n` +
+                    `Date Applied: ${job.date}\n` +
+                    `Status: ${job.status}\n\n`;
+            }).join("");
+
+            // Format profiles
+            const formattedProfiles = profiles.map((profile, index) => {
+                return `Profile ${index + 1}:\n` +
+                    `Name: ${profile.name}\n` +
+                    `LinkedIn: ${profile.linkedinUrl || "N/A"}\n` +
+                    `Custom Fields:\n` +
+                    profile.fields.map(field => `  - ${field.name}: ${field.value}`).join("\n") + "\n\n";
+            }).join("");
+
+            // Combine both jobs and profiles
+            const bodyContent = `Job Applications:\n\n${formattedJobs || "No jobs available."}\n` +
+                `Profiles:\n\n${formattedProfiles || "No profiles available."}`;
+
+            // Create mailto link
+            const subject = encodeURIComponent("Job Application and Profile Data Export");
+            const body = encodeURIComponent(bodyContent);
+            const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
+
+            window.location.href = mailtoLink; // Open the default email client
+        });
     });
 
     // Listen for messages from content.js
