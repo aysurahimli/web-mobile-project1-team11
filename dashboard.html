@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Application Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header>
+        <h1>Job Application Tracker</h1>
+    </header>
+
+    <main>
+        <section id="jobDashboard">
+            <h2>Your Job Applications</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Job Title</th>
+                        <th>Date Applied</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="jobList">
+                    <!-- Dynamic job entries will go here -->
+                </tbody>
+            </table>
+            <button id="addJobButton">Add New Job</button>
+            <button id="exportDataButton">Export Data</button>
+            <input type="file" id="importDataInput" style="display: none;" />
+            <button id="importDataButton">Import Data</button>
+            <button id="sendDataEmailButton">Send Data via Email</button>
+        </section>
+
+        <div id="addJobModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span id="closeModal" class="close">&times;</span>
+                <h3>Add Job Application</h3>
+                <form id="addJobForm">
+                    <label for="companyName">Company Name:</label>
+                    <input type="text" id="companyName" name="companyName" required />
+
+                    <label for="jobTitle">Job Title:</label>
+                    <input type="text" id="jobTitle" name="jobTitle" required />
+
+                    <label for="dateApplied">Date Applied:</label>
+                    <input type="date" id="dateApplied" name="dateApplied" required />
+
+                    <label for="applicationStatus">Status:</label>
+                    <select id="applicationStatus" name="applicationStatus" required>
+                        <option value="Applied">Applied</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Offer">Offer</option>
+                    </select>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

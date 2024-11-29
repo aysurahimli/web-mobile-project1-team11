@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Auto Form Filler</title>
+   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -50,6 +52,55 @@
     <select id="savedFormDropdown"></select><br><br>
     <button id="resetFormButton">Reset Form</button>
     
+
+
+  
+
+<body>
+    <div id="dashboardLinkContainer">
+        <button id="openDashboardButton">Open Dashboard</button>
+    </div>
+
+    <h2 style="text-align: center;">Custom Data Fields</h2>
+    <div style="margin-bottom: 15px;"></div>
+    <label for="profileSelect">Select Profile:</label>
+    <select id="profileSelect">
+        <option disabled>Select a profile</option>
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button id="addProfileButton">Add Profile</button>
+    <button id="deleteProfileButton">Delete Profile</button>
+    </div>
+    <div id="customFieldsContainer"></div>
+
+    <!-- Input form to add new custom field -->
+    <div style="margin-bottom: 15px;">
+        <input type="text" id="fieldName" placeholder="Field Name (e.g., Certificates)">
+        <input type="text" id="fieldValue" placeholder="Field Value (e.g., Certified JavaScript Developer)">
+        <button id="addFieldButton">Add Field</button>
+    </div>
+
+    <!-- Edit Field Modal -->
+    <div id="editFieldModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h3>Edit Field</h3>
+            <label for="editFieldName">Field Name:</label>
+            <input type="text" id="editFieldName" />
+            <label for="editFieldValue">Field Value:</label>
+            <input type="text" id="editFieldValue" />
+            <button id="saveEditButton">Save Changes</button>
+        </div>
+    </div>
+
+    <div>
+        <input type="text" id="linkedinProfileUrl" placeholder="LinkedIn Profile URL">
+    </div>
+
+    <button id="getLinkedinData">Get LinkedIn Data</button>
+    <button id="autoFillButton">Auto-Fill Form</button>
+
+
     <script src="popup.js"></script>
 </body>
 
