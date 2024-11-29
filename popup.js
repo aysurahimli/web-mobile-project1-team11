@@ -114,11 +114,12 @@ displayMappings();
 
 document.getElementById("saveForm").addEventListener("click", () => {
     chrome.storage.local.get(["activeProfile", "profiles", "savedForms, mappings"], (result) => {
-        const profiles = result.profiles || {};
+        const profiles = result.profiles || [];
         const activeProfileName = result.activeProfile;
         const savedForms = result.savedForms || [];
         const mappings = result.mappings || [];
         const customFields = result.customFields || [];
+
         if (!activeProfileName || !profiles[activeProfileName]) {
             alert("No active profile found.");
             return;
@@ -206,7 +207,9 @@ function resetForm() {
         mappingList.innerHTML = "";
     }
 
+
     const customFieldsContainer = document.getElementById("customFieldsContainer");
+
     if (customFieldsContainer) {
         customFieldsContainer.innerHTML = "";
     }
@@ -216,7 +219,8 @@ function resetForm() {
         linkedinProfileUrlInput.value = "https://www.linkedin.com/in/";
     }
 
-    chrome.storage.local.set({ customFields: {}, mappings: [], profiles: [], activeProfile: [], savedForms: []  }, () => {
+
+    chrome.storage.local.set({ customFields: [], mappings: [], profiles: [], activeProfile: [], savedForms: [] }, () => {
         console.log("Form reset and storage cleared.")
     });
 }

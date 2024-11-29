@@ -12,7 +12,7 @@
 <body>
     <h1>Auto Form Filler</h1>
 
-    <h2>Profile Switching</h2>
+    <h2 style="text-align: center;">Profile Switching</h2>
     <div>
         <label for="newProfileName">New Profile Name:</label>
         <input type="text" id="newProfileName" placeholder="Enter Profile Name">
@@ -25,7 +25,8 @@
     </div>
     
     <h2 style="text-align: center;">Form Field Mapping</h2>
-        <div id="mappingContainer">
+
+    <div id="mappingContainer">
         <div class="mapping">
             <label>Select Field:</label>
             <select class="profileField">
@@ -44,11 +45,6 @@
     </div>
 
     
-
-
-  
-
-<body>
     <div id="dashboardLinkContainer">
         <button id="openDashboardButton">Open Dashboard</button>
     </div>
@@ -59,8 +55,8 @@
     <select id="profileSelect">
         <option disabled>Select a profile</option>
         <!-- Options will be populated dynamically -->
-    </select>
-    <button id="addProfileButton">Add Profile</button>
+    </select><br>
+    <button id="addProfileButton">Add Profile</button><br><br>
     <button id="deleteProfileButton">Delete Profile</button>
     </div>
     <div id="customFieldsContainer"></div>
@@ -92,6 +88,7 @@
     <button id="getLinkedinData">Get LinkedIn Data</button>
     <button id="autoFillButton">Auto-Fill Form</button>
 
+
     <h2 style="text-align: center;">Save Form Data for Later</h3>
         <label>Press to Save:</label><br>
         <button id="saveForm">Save Form Data</button>
@@ -100,6 +97,7 @@
         <div id="savedForms"></div>
         <select id="savedFormDropdown"></select><br><br>
         <button id="resetFormButton">Reset Form</button><br><br><br>
+
     
     <script src="popup.js"></script>
 </body>
