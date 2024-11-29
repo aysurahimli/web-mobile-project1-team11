@@ -118,6 +118,7 @@ document.getElementById("saveForm").addEventListener("click", () => {
         const activeProfileName = result.activeProfile;
         const savedForms = result.savedForms || [];
         const mappings = result.mappings || [];
+        const customFields = result.customFields || {};
 
         if (!activeProfileName || !profiles[activeProfileName]) {
             alert("No active profile found.");
@@ -128,6 +129,7 @@ document.getElementById("saveForm").addEventListener("click", () => {
             profileData: profiles[activeProfileName],
             profileName: activeProfileName,
             mappings: mappings,
+            customFields: customFields,
             dateSaved: new Date().toLocaleString()
         };
 
@@ -205,7 +207,17 @@ function resetForm() {
         mappingList.innerHTML = "";
     }
 
-    chrome.storage.local.set({ customFields: {}, mappings: [] }, () => {
+    const customFieldsContainer = document.getElementById("CustomFieldsContainer");
+    if (customFieldsContainer) {
+        customFieldsContainer.innerHTML = "";
+    }
+
+    const linkedinProfileUrlInput = document.getElementById("linkedinProfileUrl");
+    if (linkedinProfileUrlInput) {
+        linkedinProfileUrlInput.value = "https://www.linkedin.com/in/";
+    }
+
+    chrome.storage.local.set({ customFields: {}, mappings: [], profiles: [], activeProfile: [], savedForms: [] }, () => {
         console.log("Form reset and storage cleared.")
     });
 }
