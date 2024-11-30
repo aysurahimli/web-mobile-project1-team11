@@ -1,79 +1,4 @@
 
-const profileDropdown = document.getElementById("profileDropdown");
-const newProfileButton = document.getElementById("newProfileButton");
-const newProfileName = document.getElementById("newProfileName");
-const saveProfileButton = document.getElementById("saveProfileButton");
-const currentProfileDiv = document.getElementById("currentProfile");
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadProfiles();
-    displaySavedForms();
-    savedFormDropdown();
-});
-
-function loadProfiles() {
-    chrome.storage.local.get(["profiles", "activeProfile"], (data) => {
-        const profiles = data.profiles || {};
-        const activeProfile = data.activeProfile || "";
-        profileDropdown.innerHTML = "";
-        for (const profileName in profiles) {
-            const option = document.createElement("option");
-            option.value = profileName;
-            option.textContent = profileName;
-            if (profileName === activeProfile) {
-                option.selected = true;
-            }
-            profileDropdown.appendChild(option);
-        }
-        currentProfileDiv.textContent = activeProfile ? `Current Profile : ${activeProfile}` : "No profile selected";
-    });
-}
-
-newProfileButton.addEventListener("click", () => {
-    const profileName = newProfileName.value.trim();
-    if (profileName) {
-        chrome.storage.local.get("profiles", (data) => {
-            const profiles = data.profiles || {};
-            profiles[profileName] = {}; 
-            chrome.storage.local.set({ profiles, activeProfile: profileName }, () => {
-                newProfileName.value = "";
-            loadProfiles();
-            });
-        });
-    }
-});
-
-saveProfileButton.addEventListener("click", () => {
-    const selectedProfile = profileDropdown.value;
-    if (selectedProfile) {
-        chrome.storage.local.get("customFields", (data) => {
-            const customFields = data.customFields || {};
-            chrome.storage.local.get("profiles", (profileData) => {
-                const profiles = profileData.profiles || {};
-                profiles[selectedProfile] = customFields;
-                chrome.storage.local.set({ profiles }, () => {
-                    alert("Profile updated successfully!");
-                });
-            });
-        });
-    }
-});
-
-profileDropdown.addEventListener("change", () => {
-    const selectedProfile = profileDropdown.value;
-    if (selectedProfile) { 
-    chrome.storage.local.get("profiles", (data) => {
-        const profiles = data.profiles || {};
-        const customFields = profiles[selectedProfile] || {};
-        chrome.storage.local.set({ customFields, activeProfile: selectedProfile }, () => {
-            currentProfileDiv.textContent = `Current Profile: ${selectedProfile}`;
-        }
-    );
-});
-}
-});
-
-
 document.querySelectorAll(".addMapping").forEach(button => {
     button.addEventListener("click", () => {
         const profileField = document.querySelector(".profileField").value;
@@ -113,23 +38,28 @@ function displayMappings() {
 displayMappings();
 
 document.getElementById("saveForm").addEventListener("click", () => {
-    chrome.storage.local.get(["activeProfile", "profiles", "savedForms, mappings"], (result) => {
+    chrome.storage.local.get(["activeProfileName", "profiles", "savedForms, mappings"], (result) => {
         const profiles = result.profiles || [];
-        const activeProfileName = result.activeProfile;
+        const activeProfileName = result.activeProfileName;
         const savedForms = result.savedForms || [];
         const mappings = result.mappings || [];
-        const customFields = result.customFields || [];
 
-        if (!activeProfileName || !profiles[activeProfileName]) {
+        if (!activeProfileName || !profiles.some(profile => profile.name === activeProfileName)) {
             alert("No active profile found.");
             return;
         }
 
+        const activeProfile = profiles.find(profile => profile.name === activeProfileName);
+
+        const customFields = activeProfile.fields || [];
+        const linkedinUrl = activeProfile.linkedinUrl || "";
+
         const formToSave = {
-            profileData: profiles[activeProfileName],
+            profileData: activeProfile,
             profileName: activeProfileName,
             mappings: mappings,
             customFields: customFields,
+            linkedinUrl: linkedinUrl,
             dateSaved: new Date().toLocaleString()
         };
 
@@ -190,17 +120,6 @@ function savedFormDropdown () {
 
 
 function resetForm() {
-    document.getElementById("newProfileName").value = "";
-
-    const profileDropdown = document.getElementById("profileDropdown");
-    if (profileDropdown) {
-        profileDropdown.selectedIndex = 0;
-    }
-
-    const currentProfile = document.getElementById("currentProfile");
-    if (currentProfileDiv) {
-        currentProfileDiv.textContent = "No profile selected.";
-    }
 
     const mappingList = document.getElementById("mappingList");
     if (mappingList) {

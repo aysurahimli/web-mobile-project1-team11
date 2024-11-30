@@ -11,39 +11,8 @@
 
 <body>
     <h1>Auto Form Filler</h1>
-
-    <h2 style="text-align: center;">Profile Switching</h2>
-    <div>
-        <label for="newProfileName">New Profile Name:</label>
-        <input type="text" id="newProfileName" placeholder="Enter Profile Name">
-        <button id="newProfileButton">New Profile</button><br><br>
-        <label for="profileDropdown">Select Profile:</label>  
-        <select id="profileDropdown"></select><br>
-        
-        <button id="saveProfileButton">Save Profile</button>
-        <div id="currentProfile"></div>
-    </div>
     
-    <h2 style="text-align: center;">Form Field Mapping</h2>
-
-    <div id="mappingContainer">
-        <div class="mapping">
-            <label>Select Field:</label>
-            <select class="profileField">
-                <option value="name">Name</option>
-                <option value="jobTitle">Job Title</option>
-                <option value="experience">Experience</option>
-                <option value="skills">Skills</option>
-                <option value="certifications">Certifications</option>
-
-            </select><br><br>
-            <label>Enter The Field to Map:</label><br>
-            <input type="text" class="formField" placeholder="e.g. Name->'Full Name'">
-            <button class="addMapping">Add Mapping</button>
-        </div><br>
-        <div id="mappingList"></div>
-    </div>
-
+    
     
     <div id="dashboardLinkContainer">
         <button id="openDashboardButton">Open Dashboard</button>
@@ -79,6 +48,25 @@
             <input type="text" id="editFieldValue" />
             <button id="saveEditButton">Save Changes</button>
         </div>
+    </div>
+<h2 style="text-align: center;">Form Field Mapping</h2>
+
+    <div id="mappingContainer">
+        <div class="mapping">
+            <label>Select Field:</label>
+            <select class="profileField">
+                <option value="name">Name</option>
+                <option value="jobTitle">Job Title</option>
+                <option value="experience">Experience</option>
+                <option value="skills">Skills</option>
+                <option value="certifications">Certifications</option>
+
+            </select><br><br>
+            <label>Enter The Field to Map:</label><br>
+            <input type="text" class="formField" placeholder="e.g. Name->'Full Name'">
+            <button class="addMapping">Add Mapping</button>
+        </div><br>
+        <div id="mappingList"></div>
     </div>
 
     <div>
