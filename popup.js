@@ -1,7 +1,8 @@
 /* 
 Citations for this project:
 OpenAI. ChatGPT [Large Language Model]. https://chatgpt.com/share/6745f93e-ece0-8013-a123-1fd0253fd69d (git workflow)
-https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world (for starting)
+Hello World extension. (2022, October 4). Chrome for Developers. https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world  (for starting)
+freeCodeCamp. (2022, February 3). How to create your own Google Chrome Extension. freeCodeCamp.org. https://www.freecodecamp.org/news/building-chrome-extension/ 
 OpenAI. ChatGPT [Large Language Model] https://chatgpt.com/share/674c5178-d114-8013-85ba-1271a9044b3d (save button checking functionality)
 
  */
