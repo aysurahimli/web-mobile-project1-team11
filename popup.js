@@ -1,3 +1,11 @@
+/* 
+Citations for this project:
+OpenAI. ChatGPT [Large Language Model]. https://chatgpt.com/share/6745f93e-ece0-8013-a123-1fd0253fd69d (git workflow)
+https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world (for starting)
+OpenAI. ChatGPT [Large Language Model] https://chatgpt.com/share/674c5178-d114-8013-85ba-1271a9044b3d (save button checking functionality)
+
+ */
+
 
 document.querySelectorAll(".addMapping").forEach(button => {
     button.addEventListener("click", () => {
@@ -179,22 +187,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Function to load profiles and the active profile from chrome.storage.local
 function loadProfiles() {
-    chrome.storage.local.get(["profiles", "activeProfileName"], (data) => {
-        profiles = data.profiles || [];
-        const activeProfileName = data.activeProfileName;
-
+    chrome.storage.local.get(["profiles", "activeProfileName"], ({ profiles = [], activeProfileName }) => {
         populateProfileSelect();
 
         // Set the active profile if available
-        activeProfile = profiles.find((p) => p.name === activeProfileName) || profiles[0] || null;
+        activeProfile = profiles.find(p => p.name === activeProfileName) || profiles[0] || null;
 
-        if (activeProfile) {
-            profileSelect.value = activeProfile.name;
-            updateCustomFieldsUI();
-            updateLinkedInUrlField();
-        } else {
-            clearUI();
+        if (!activeProfile) {
+            return clearUI();
         }
+
+        profileSelect.value = activeProfile.name;
+        updateCustomFieldsUI();
+        updateLinkedInUrlField();
     });
 }
 
