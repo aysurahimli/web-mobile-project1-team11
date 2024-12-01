@@ -1,3 +1,11 @@
+/* 
+Citations for this project:
+OpenAI. ChatGPT [Large Language Model]. https://chatgpt.com/share/6745f93e-ece0-8013-a123-1fd0253fd69d (git workflow)
+https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world (for starting)
+OpenAI. ChatGPT [Large Language Model] https://chatgpt.com/share/674c5178-d114-8013-85ba-1271a9044b3d (save button checking functionality)
+
+ */
+
 
 document.querySelectorAll(".addMapping").forEach(button => {
     button.addEventListener("click", () => {
