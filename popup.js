@@ -179,22 +179,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Function to load profiles and the active profile from chrome.storage.local
 function loadProfiles() {
-    chrome.storage.local.get(["profiles", "activeProfileName"], (data) => {
-        profiles = data.profiles || [];
-        const activeProfileName = data.activeProfileName;
-
+    chrome.storage.local.get(["profiles", "activeProfileName"], ({ profiles = [], activeProfileName }) => {
         populateProfileSelect();
 
         // Set the active profile if available
-        activeProfile = profiles.find((p) => p.name === activeProfileName) || profiles[0] || null;
+        activeProfile = profiles.find(p => p.name === activeProfileName) || profiles[0] || null;
 
-        if (activeProfile) {
-            profileSelect.value = activeProfile.name;
-            updateCustomFieldsUI();
-            updateLinkedInUrlField();
-        } else {
-            clearUI();
+        if (!activeProfile) {
+            return clearUI();
         }
+
+        profileSelect.value = activeProfile.name;
+        updateCustomFieldsUI();
+        updateLinkedInUrlField();
     });
 }
 
